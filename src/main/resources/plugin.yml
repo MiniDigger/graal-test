@@ -1,7 +1,7 @@
 name: Graal
 author: MiniDigger
 api-version: 1.13
-main: me.minidigger.graal.BukkitPlugin
+main: me.minidigger.graal.GraalPlugin
 version: 1.0
 commands:
   graaljs:

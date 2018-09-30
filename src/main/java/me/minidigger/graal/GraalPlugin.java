@@ -17,11 +17,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.EventExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class BukkitPlugin extends JavaPlugin implements Listener {
+public class GraalPlugin extends JavaPlugin implements Listener {
 
     private Map<String, String> langs = new HashMap<String, String>() {
         {
@@ -37,9 +36,6 @@ public class BukkitPlugin extends JavaPlugin implements Listener {
         if (!getDataFolder().exists()) {
             getDataFolder().mkdir();
         }
-
-        Bukkit.getServer().getPluginManager()
-                .registerEvent(PlayerJoinEvent.class, this, EventPriority.HIGH, (listener, event) -> System.out.println(), this);
     }
 
     @Override
@@ -81,22 +77,16 @@ public class BukkitPlugin extends JavaPlugin implements Listener {
     }
 
     private Context createContext(CommandSender sender) {
-        Context context = Context.newBuilder("js").allowHostAccess(true).build();
+        Context context = Context.newBuilder(langs.keySet().toArray(new String[0])).allowHostAccess(true).build();
 
-        context.getPolyglotBindings().putMember("Bukkit", Bukkit.getServer());
         context.getPolyglotBindings().putMember("sender", sender);
         context.getPolyglotBindings().putMember("plugin", this);
 
         return context;
     }
 
-    public void registerEvent(String eventName, EventExecutor executor) {
-        Class<? extends Event> eventClass = null;
-        try {
-            eventClass = (Class<? extends Event>) Class.forName(eventName);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+    public void registerEvent(String id, Class<? extends Event> eventClass, EventExecutor executor) {
+        //TODO use id to unregister events eventually
 
         Bukkit.getServer().getPluginManager().registerEvent(eventClass, this, EventPriority.NORMAL, executor, this);
     }

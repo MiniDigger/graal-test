@@ -1,2 +1,1 @@
-bukkit = Polyglot.import('Bukkit');
-bukkit.getVersion();
+Java.type('org.bukkit.Bukkit').getVersion();
