@@ -3,3 +3,4 @@ graaltest2.iml
 paper/
 !paper/plugins/Graal
 target/
+!target/graal-test.jar
